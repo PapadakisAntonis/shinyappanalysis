@@ -1,43 +1,17 @@
-library(shinydashboard)
-library(DT)
-library(shiny)
-library(shinyjs)
-library(shinycssloaders)
-library(shinyalert)
-library(SeuratObject)
-library(Seurat)
-library(plotly)
-library(igraph)
-library(hdf5r)
-library(rgl)
-library(RColorBrewer)
-library(dplyr)
-library(visNetwork)
-library(heatmaply)
-library(gprofiler2)
-library(ggplot2)
-library(ggpubr)
-library(CIPR) # devtools::install_github("atakanekiz/CIPR-Package", build_vignettes = F)
-library(dittoSeq) # BiocManager::install("dittoSeq")
-library(slingshot) # BiocManager::install("slingshot")
-library(nichenetr) # devtools::install_github("saeyslab/nichenetr") # BiocManager::install("limma")
-library(tidyverse)
-library(destiny) #remotes::install_github("theislab/destiny")
-library(UCell) #remotes::install_github("carmonalab/UCell")
-library(colorspace)
-library(missMDA)
-library(dismo)
-library(scDblFinder)
-library(phateR) #pip install phate //\\ #install.packages("phateR") //\\ *devtools::install_github("scottgigante/seurat", ref="patch/add-PHATE-again") //\\ #reticulate::py_install("phate", pip=TRUE)
-library(decoupleR) #BiocManager::install("saezlab/decoupleR") or BiocManager::install("decoupleR")
-library(tibble)
-library(tidyr)
-library(shinyBS)
-library(glmGamPoi)
-library(HGNChelper)
-library(openxlsx)
-library(data.tree)
-library(ggraph)
+if(! "librarian" %in% installed.packages()){
+  install.packages("librarian", dependencies = TRUE)
+}
+if(! "CIPR" %in% installed.packages()){
+  devtools::install_github("atakanekiz/CIPR-Package", build_vignettes = F)
+}
+
+
+
+require("librarian")
+librarian::shelf(shinydashboard, NeuCA, DT, shiny, shinyjs, shinycssloaders, shinyalert, SeuratObject, Seurat, plotly, igraph,
+                 hdf5r, rgl, RColorBrewer, dplyr, visNetwork, heatmaply, gprofiler2, ggplot2, ggpubr, CIPR, dittoSeq, slingshot,
+                 saeyslab/nichenetr,tidyverse,theislab/destiny,carmonalab/UCell, colorspace, missMDA, dismo, scDblFinder,phateR,
+                 decoupleR, tibble, tidyr, shinyBS, glmGamPoi, HGNChelper, openxlsx, data.tree, ggraph)
 source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/gene_sets_prepare.R"); source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/sctype_score_.R")
 db_ = "https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/ScTypeDB_full.xlsx";
 tissue = "Kidney" # e.g. Immune system,Pancreas,Liver,Eye,Kidney,Brain,Lung,Adrenal,Heart,Intestine,Muscle,Placenta,Spleen,Stomach,Thymus 
@@ -45,22 +19,22 @@ tissue = "Kidney" # e.g. Immune system,Pancreas,Liver,Eye,Kidney,Brain,Lung,Adre
 gs_list = gene_sets_prepare(db_, tissue)
 source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/auto_detect_tissue_type.R")
 #ATAC libraries
-# library(ArchR)
-# library(pheatmap)
-# library(SCENIC)
-# library(SCopeLoomR)
-# library(AUCell)
-# library(GSEABase)
-# library(RcisTarget)
-# library(stringr)
-# library(readr)
-# library(parallel)
-# library(chromVAR)
-# library(chromVARmotifs)
-# library(reticulate)
-# library(JASPAR2020)
-# library(JASPAR2018)
-# library(JASPAR2016) #BiocManager::install("JASPAR2020"), BiocManager::install("JASPAR2018"), BiocManager::install("JASPAR2016")
+# ArchR
+# pheatmap
+# SCENIC
+# SCopeLoomR
+# AUCell
+# GSEABase
+# RcisTarget
+# stringr
+# readr
+# parallel
+# chromVAR
+# chromVARmotifs
+# reticulate
+# JASPAR2020
+# JASPAR2018
+# JASPAR2016 #BiocManager::install("JASPAR2020", BiocManager::install("JASPAR2018", BiocManager::install("JASPAR2016"
 
 #Global variables
 YEAR <- substr(Sys.Date(), 1, 4)
@@ -208,5 +182,3 @@ hideAllLoaders <- function(){
   shinyjs::hide("visualizeTracksOutput_loader")
 }
 
-#gProfiler
-#set_base_url("http://biit.cs.ut.ee/gprofiler_archive3/e102_eg49_p15")
