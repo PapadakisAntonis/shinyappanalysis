@@ -1,11 +1,5 @@
-library(bsplus)
-library(shiny)
-library(Seurat)
-library(Signac)
-library(shinydashboard)
-library(shinyjs)
-library(plotly)
-source("global.R", local=TRUE)
+librarian::shelf(bsplus, shiny, Seurat, Signac, shinydashboard, shinyjs, plotly) 
+source("global.R", local=TRUE) #load useful packages and functions
 js.enrich <- "
   shinyjs.Enrich = function(url) {
     window.open(url[0]);
@@ -826,8 +820,8 @@ server = function(input, output, session){
      {
       session$sendCustomMessage("handler_disableTabs", "sidebarMenu")
       session$sendCustomMessage("handler_disableAllButtons", "upload10xRNAConfirm")
-       #tryCatch({
-       # showModal(modalDialog(div('Data upload in progress. Please wait...'))) 
+       tryCatch({
+       showModal(modalDialog(div('Data upload in progress. Please wait...')))
          showModal(modalDialog(div('Data upload in progress. Please wait...')))
          metaD$my_project_name <- input$upload10xRNAprojectID
         minimum_cells <<- input$upload10xRNAminCells
@@ -871,14 +865,14 @@ server = function(input, output, session){
           updateTextAreaInput(session, inputId="findMarkersSignatureMembers", placeholder = "PRG4\nTSPAN15\nCOL22A1\nHTRA4")
 
         session$sendCustomMessage("handler_enableTabs", c("sidebarMenu", "2. Droplet processing", "Utilities"))
-     #  }, error = function(e) {
-     #    print(paste("Error :  ", e))
-     #    session$sendCustomMessage("handler_alert", "Data Input error. Please, refer to the help pages for input format.")
-     #  }, finally = { # with or without error
-     #    removeModal()
-     #    Sys.sleep(1) # giving some time for rendering for smoother transition
-     #    session$sendCustomMessage("handler_enableAllButtons", "upload10xRNAConfirm")
-     # })
+       }, error = function(e) {
+        print(paste("Error :  ", e))
+        session$sendCustomMessage("handler_alert", "Data Input error. Please, refer to the help pages for input format.")
+      }, finally = { # with or without error
+        removeModal()
+        Sys.sleep(1) # giving some time for rendering for smoother transition
+        session$sendCustomMessage("handler_enableAllButtons", "upload10xRNAConfirm")
+      })
      }
    })
    
