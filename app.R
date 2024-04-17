@@ -1,12 +1,8 @@
 librarian::shelf(bsplus, shiny, Seurat, Signac, shinydashboard, shinyjs, plotly) 
 source("global.R", local=TRUE) #load useful packages and functions
-js.enrich <- "
-  shinyjs.Enrich = function(url) {
-    window.open(url[0]);
-  }"
+
 shinyApp(
-  
-  ui = dashboardPage(
+    ui = dashboardPage(
     title="KFO single-cell analysis",
     skin = "purple",
     #Header
@@ -29,8 +25,8 @@ shinyApp(
                                  menuItem(text = "10. Marker gene detection", tabName = "markers"),
                                  menuItem(text = "11. Cell-type annotation", tabName = "annotateClusters"),
                                  tags$hr(),
-                                 menuItem(text= "Utilities",tabName = "utilities")
-                                # menuItem(text = "Help", tabName = "help", icon = icon("question"))
+                                 menuItem(text = "Utilities",tabName = "utilities"),
+                                 menuItem(text = "Help", tabName = "help", icon = icon("question"))
     )),
     #Body
     dashboardBody(tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "main.css")),
@@ -40,26 +36,28 @@ shinyApp(
                   useShinyjs(),
                   extendShinyjs(text = js.enrich, functions = c("Enrich")),
                   tabItems(
-      tabItem(tabName = "home",
-              div(id = "home_div", class = "div_container",
-                  h1(class = "container_title", "KFO 329 single-cell Shiny app"),
-                  HTML("<p class=container_text> This application is made to perform the standard pipeline for analyzing scRNA-seq datasets in the KFO. 
-                       You can upload your data or try the example sample."))),
+                    tabItem(tabName = "home",
+                    div(id = "home_div", class = "div_container",
+                    h1(class = "container_title", "KFO 329 single-cell Shiny app"),
+                    HTML("<p class=container_text> This application is made to perform the standard pipeline for analyzing scRNA-seq datasets in the KFO. 
+                         You can upload your data."))),
+                    
       tabItem(tabName = "input",
+              tags$br(),
               fluidRow(
                 box(width = 3, status = "info", solidHeader = TRUE,
                            title = "Data upload",
                            tabsetPanel(type="tabs",
-                                       tabPanel("10x input files (MEX)",
+                                       tabPanel("10x input files (sparse data matrix)",
                                                 tags$h3("File upload"),
                                                 tags$hr(),
-                                                textInput(inputId = "upload10xRNAprojectID", label = "Project name : ", value = "KFO 329"),
-                                                fileInput(inputId = "barcodes", label = "1. Choose barcodes.tsv.gz file", accept = ".gz"),
-                                                fileInput(inputId = "genes", label = "2. Choose features.tsv.gz file", accept = ".gz"),
-                                                fileInput(inputId = "matrix", label = "3. Choose matrix.mtx.gz file", accept = ".gz"),
-                                                sliderInput(inputId = "upload10xRNAminCells", label = "Include genes detected in at least this many cells :", min = 0, max = 20, value = 3, step = 1),
-                                                sliderInput(inputId = "upload10xRNAminFeatures", label = "Include cells where at least this many genes are detected :", min = 0, max = 1000, value = 200, step = 1),
-                                                radioButtons("upload10xRNARadioSpecies", label = h3("Select organism : "),
+                                                textInput(inputId = "upload10xname", label = "Project name : ", value = "KFO 329"),
+                                                fileInput(inputId = "barcodes", label = "1. barcodes.tsv.gz file", accept = ".gz"),
+                                                fileInput(inputId = "genes", label = "2. features.tsv.gz file", accept = ".gz"),
+                                                fileInput(inputId = "matrix", label = "3. matrix.mtx.gz file", accept = ".gz"),
+                                                sliderInput(inputId = "upload10xminCells", label = "Include genes detected in at least this many cells :", min = 0, max = 20, value = 3, step = 1),
+                                                sliderInput(inputId = "upload10xminFeatures", label = "Include cells where at least this many genes are detected :", min = 0, max = 1000, value = 200, step = 1),
+                                                radioButtons("upload10xOrganism", label = h3("Select organism : "),
                                                              choices = list("Mus musculus (Mouse)" = "mouse", 
                                                                             "Homo sapiens (Human)" = "human"
                                                              ), 
@@ -69,11 +67,11 @@ shinyApp(
                                                 tags$hr(),
                                                 downloadButton(outputId = "utilitiesConfirmExport2", label = "Export .RDS")
                                        ),
-                                       tabPanel("10x input files (HDF5)",
+                                       tabPanel("10x input files (hdf5)",
                                                 tags$h3("File upload"),
                                                 tags$hr(),
                                                 textInput(inputId = "uploadh5projectID", label = "Project name : ", value = "KFO 329"),
-                                                fileInput(inputId = "uploadh5", label = "1. HDF5 file", accept = ".h5"),
+                                                fileInput(inputId = "uploadh5", label = "1. hdf5 file", accept = ".h5"),
                                                 sliderInput(inputId = "uploadh5minCells", label = "Include genes detected in at least this many cells :", min = 1, max = 20, value = 3, step = 1),
                                                 sliderInput(inputId = "uploadh5minFeatures", label = "Include cells where at least this many genes are detected :", min = 1, max = 1000, value = 200, step = 1),
                                                 radioButtons("uploadh5RadioSpecies", label = h3("Select organism : "),
@@ -823,10 +821,10 @@ server = function(input, output, session){
        tryCatch({
        showModal(modalDialog(div('Data upload in progress. Please wait...')))
          showModal(modalDialog(div('Data upload in progress. Please wait...')))
-         metaD$my_project_name <- input$upload10xRNAprojectID
-        minimum_cells <<- input$upload10xRNAminCells
-        minimum_features <<- input$upload10xRNAminFeatures
-        organism <<- input$upload10xRNARadioSpecies
+         metaD$my_project_name <- input$upload10xname
+        minimum_cells <<- input$upload10xminCells
+        minimum_features <<- input$upload10xminFeatures
+        organism <<- input$upload10xOrganism
 
         userId <- session$token
         user_dir <<- paste0("./usr_temp/", userId, metaD$my_project_name, gsub(pattern = "[ ]|[:]", replacement = "_", x = paste0("_", Sys.time())))

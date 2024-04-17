@@ -11,7 +11,7 @@ require("librarian")
 librarian::shelf(shinydashboard, NeuCA, DT, shiny, shinyjs, shinycssloaders, shinyalert, SeuratObject, Seurat, plotly, igraph,
                  hdf5r, rgl, RColorBrewer, dplyr, visNetwork, heatmaply, gprofiler2, ggplot2, ggpubr, CIPR, dittoSeq, slingshot,
                  saeyslab/nichenetr,tidyverse,theislab/destiny,carmonalab/UCell, colorspace, missMDA, dismo, scDblFinder,phateR,
-                 decoupleR, tibble, tidyr, shinyBS, glmGamPoi, HGNChelper, openxlsx, data.tree, ggraph)
+                 decoupleR, tibble, tidyr, shinyBS, glmGamPoi, HGNChelper, openxlsx, data.tree, ggraph, shinyChakraSlider)
 source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/gene_sets_prepare.R"); source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/sctype_score_.R")
 db_ = "https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/ScTypeDB_full.xlsx";
 tissue = "Kidney" # e.g. Immune system,Pancreas,Liver,Eye,Kidney,Brain,Lung,Adrenal,Heart,Intestine,Muscle,Placenta,Spleen,Stomach,Thymus 
@@ -113,6 +113,7 @@ if(userMode == F)
   #to improve speed
 }
 
+#opening new window
 js.enrich <- "
   shinyjs.Enrich = function(url) {
     window.open(url[0]);
