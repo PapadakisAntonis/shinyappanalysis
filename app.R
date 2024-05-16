@@ -39,7 +39,7 @@ shinyApp(
                     tabItem(tabName = "home",
                     div(id = "home_div", class = "div_container",
                     h1(class = "container_title", "KFO 329 single-cell Shiny app"),
-                    HTML("<p class=container_text> This application is made to perform the standard pipeline for analyzing scRNA-seq datasets in the KFO. 
+                    HTML("<p class=container_text> This application is made to perform the standard pipeline for analyzing scRNA-seq datasets in the KFO 329. 
                          You can upload your data."))),
                     
       tabItem(tabName = "input",
@@ -679,7 +679,7 @@ tabItem(tabName = "shinycell",
                                              box(width = 3, status = "info", solidHeader = TRUE, title = "Options",
                                                  selectizeInput(inputId = 'findMarkersGeneSelect',
                                                                 label = 'Type the name of a gene, gene signature or numeric metadata column: 
-                                                                      (e.g. "Ccl2" or "Signature1_Ucell", or "nCount_RNA")',
+                                                                      (e.g. "Nphs1" or "Signature1_Ucell", or "nCount_RNA")',
                                                                 choices = NULL,
                                                                 selected = NULL,
                                                                 multiple = FALSE),
@@ -1594,7 +1594,7 @@ server = function(input, output, session){
      tryCatch({
        if (identical(seurat_object, NULL)) session$sendCustomMessage("handler_alert", "Please, upload some data first.")
        else{
-         showModal(modalDialog(div('SNN graph visualization in progress. This a slow operation for large datasets. Please wait...'))) #position:absolute;top:50%;left:50%
+         showModal(modalDialog(div('SNN graph visualization in progress. Please wait...'))) #position:absolute;top:50%;left:50%
          shinyjs::show("snnSNN_loader")
          
          output$snnSNN <- renderVisNetwork(
@@ -2311,7 +2311,7 @@ server = function(input, output, session){
      session$sendCustomMessage("handler_disableAllButtons", "umapConfirm")
      tryCatch({
        if (identical(seurat_object, NULL)) session$sendCustomMessage("handler_alert", "Please, upload some data first.")
-       else if (identical(seurat_object@meta.data$seurat_clusters, NULL)) session$sendCustomMessage("handler_alert", "Please, execute CLUSTERING first and then re-run UMAP or tSNE or Diffusion Map above.")
+       else if (identical(seurat_object@meta.data$seurat_clusters, NULL)) session$sendCustomMessage("handler_alert", "Please, execute clustering first and then re-run UMAP or tSNE or Diffusion Map above.")
        else {
          showModal(modalDialog(div('Analysis in Progress. This operation may take several minutes, please wait...'))) #position:absolute;top:50%;left:50%
          shinyjs::show("umapPlot_loader")
@@ -2491,7 +2491,7 @@ server = function(input, output, session){
      session$sendCustomMessage("handler_disableAllButtons", "umapConfirm")
      tryCatch({
        if (identical(seurat_object, NULL)) session$sendCustomMessage("handler_alert", "Please, upload some data first.")
-       else if (identical(seurat_object@meta.data$seurat_clusters, NULL)) session$sendCustomMessage("handler_alert", "Please, execute CLUSTERING first and then re-run UMAP or tSNE or Diffusion Map above.")
+       else if (identical(seurat_object@meta.data$seurat_clusters, NULL)) session$sendCustomMessage("handler_alert", "Please, execute clustering first and then re-run UMAP or tSNE or Diffusion Map above.")
        else {
          showModal(modalDialog(div('Dimensional reduction in progress. This operation may take several minutes, please wait...')))
          shinyjs::show("umapPlot_loader")
@@ -3449,7 +3449,7 @@ server = function(input, output, session){
 
    modal_confirm_utilities_delete <- modalDialog(
      "By deleting a cluster, the user is advised to repeat various steps of the analysis and/or update existing plots.
-    In more detail, the scaled expression values calculated in the tab \"DATA NORMALIZATION & SCALING\" should be recalculated as the
+    In more detail, the scaled expression values calculated in the tab \"Data normalization\" should be recalculated as the
     final number of cell has changed.
     Do you want to proceed?",
      title = "Cluster deletion",
