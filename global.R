@@ -14,7 +14,7 @@ librarian::shelf(shinydashboard, NeuCA, DT, shiny, shinyjs, shinycssloaders, shi
                  decoupleR, tibble, tidyr, shinyBS, glmGamPoi, HGNChelper, openxlsx, data.tree, ggraph, shinyChakraSlider)
 source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/gene_sets_prepare.R"); source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/sctype_score_.R")
 db_ = "https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/ScTypeDB_full.xlsx";
-tissue = "Kidney" # e.g. Immune system,Pancreas,Liver,Eye,Kidney,Brain,Lung,Adrenal,Heart,Intestine,Muscle,Placenta,Spleen,Stomach,Thymus 
+tissue = "Kidney" 
 # prepare gene sets
 gs_list = gene_sets_prepare(db_, tissue)
 source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/auto_detect_tissue_type.R")
@@ -82,6 +82,7 @@ reductions_choices <- c("-")
 mmus_s = gorth(cc.genes.updated.2019$s.genes, source_organism = "hsapiens", target_organism = "mmusculus")$ortholog_name
 mmus_g2m = gorth(cc.genes.updated.2019$g2m.genes, source_organism = "hsapiens", target_organism = "mmusculus")$ortholog_name
 #export tables RNA
+
 export_metadata_RNA <- ""
 export_loadingScoresTable_RNA <- ""
 export_clustertable_RNA <- ""
@@ -122,7 +123,7 @@ js.enrich <- "
 
 # Functions ####
 
-# This is a void function that hides all shiny css loaders
+# This is a void function that hides all shiny css loaders.
 hideAllLoaders <- function(){
   shinyjs::hide("hvgScatter_loader")
   shinyjs::hide("nFeatureViolin_loader")
